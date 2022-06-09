@@ -10,7 +10,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopItemComma
     public CommandResult Handle(CreateShopItemCommand command)
     {
         var item = new ShopItem(command);
-        if (item.IsValid)
+        if (item.IsValid is false)
             return new GenericCommandResult{
                 Success = false, 
                 Message = "Ops, parece que sua tarefa está errada!", 
