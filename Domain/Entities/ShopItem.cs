@@ -7,14 +7,10 @@ public class ShopItem : Entity
 {
     public ShopItem(CreateShopItemCommand command)
     {
-        this.User = command.User;
         UpdateTitle(command.Title);
         UpdateDescription(command.Description);
         UpdateQuantity(command.Quantity);
-        AddNotifications( new Contract<ShopItem>()
-            .Requires()
-            .IsNotNullOrEmpty(command.User, "User", "User não pode ser vazio")
-        );
+        UpdateUser(command.User);
     }
 
     public string Title { get; private set; } = string.Empty;
@@ -26,9 +22,10 @@ public class ShopItem : Entity
     public void UpdateTitle(string title)
     {
         this.Title = title;
-        AddNotifications( new Contract<ShopItem>()
+        AddNotifications(new Contract<ShopItem>()
             .Requires()
             .IsNotNullOrEmpty(title, "Title", "Título não pode ser vazio")
+            .IsGreaterThan(title, 1, "Title", "Título deve conter no mínimo 2 letras")
         );
     }
     public void UpdateDescription(string description)
@@ -38,11 +35,10 @@ public class ShopItem : Entity
     public void UpdateQuantity(int quantity)
     {
         this.Quantity = quantity;
-        AddNotifications( new Contract<ShopItem>()
+        AddNotifications(new Contract<ShopItem>()
             .Requires()
             .IsGreaterThan(quantity, 0, "Quantity", "Quantidade não pode ser zero")
         );
-
     }
     public void MarkAsDone()
     {
@@ -51,5 +47,14 @@ public class ShopItem : Entity
     public void MarkAsUndone()
     {
         this.Done = false;
+    }
+
+    private void UpdateUser(string user)
+    {
+        this.User = user;
+        AddNotifications(new Contract<ShopItem>()
+            .Requires()
+            .IsNotNullOrEmpty(user, "User", "User não pode ser vazio")
+        );
     }
 }

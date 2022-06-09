@@ -11,7 +11,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopItemComma
     {
         var item = new ShopItem(command);
         if (item.IsValid is false)
-            return new GenericCommandResult{
+            return new CommandResult{
                 Success = false, 
                 Message = "Ops, parece que sua tarefa está errada!", 
                 Data = item.Notifications
@@ -20,7 +20,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopItemComma
         // Salva no banco
         _repository.Create(item);
 
-        return new GenericCommandResult{
+        return new CommandResult{
             Success = true, 
             Message = "Tarefa salva", 
             Data = item

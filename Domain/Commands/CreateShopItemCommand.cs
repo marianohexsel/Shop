@@ -6,5 +6,4 @@ public class CreateShopItemCommand : Command
     public string Description { get; set; } = null!;
     public int Quantity { get; set; }
     public string User { get; set; } = null!;
-
 }
