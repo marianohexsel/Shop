@@ -9,20 +9,24 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopItemComma
 {
     public CommandResult Handle(CreateShopItemCommand command)
     {
-        var item = new ShopItem(command);
-        if (item.IsValid is false)
-            return new CommandResult{
-                Success = false, 
-                Message = "Ops, parece que sua tarefa está errada!", 
-                Data = item.Notifications
+        command.Validate();
+        if (command.IsValid is false)
+            return new CommandResult
+            {
+                Success = false,
+                Message = "Ops, parece que sua tarefa está errada!",
+                Data = command.Notifications
             };
+
+        var item = new ShopItem(command);
 
         // Salva no banco
         _repository.Create(item);
 
-        return new CommandResult{
-            Success = true, 
-            Message = "Tarefa salva", 
+        return new CommandResult
+        {
+            Success = true,
+            Message = "Tarefa salva",
             Data = item
         };
     }

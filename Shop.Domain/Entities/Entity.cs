@@ -2,7 +2,7 @@ using Flunt.Notifications;
 
 namespace Shop.Domain.Entities;
 
-public abstract class Entity : Notifiable<Notification>, IEquatable<Entity>
+public abstract class Entity : IEquatable<Entity>
 {
     public Entity()
     {
