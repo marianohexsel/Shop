@@ -5,6 +5,14 @@ namespace Shop.Api.FakeRepository;
 
 public class FakeRepository : IShopRepository
 {
+    public void Create(ShopList shopList)
+    {
+    }
+
+    public void Update(ShopList shopList)
+    {
+    }
+
     void IShopRepository.Create(ShopItem item)
     {
         
