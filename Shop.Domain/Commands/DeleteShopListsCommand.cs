@@ -4,7 +4,7 @@ namespace Shop.Domain.Commands;
 
 public class DeleteShopListsCommand : Command
 {
-    public List<Guid> Ids { get; set; }
+    public List<Guid> Ids { get; set; } = new();
 
     public override void Validate()
     {
