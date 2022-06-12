@@ -7,24 +7,24 @@ namespace Shop.Domain.Handlers;
 
 public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListCommand>
 {
-    public CommandResult Handle(UpdateShopListCommand command)
+    public CommandResult Handle(UpdateShopItemCommand command)
     {
         command.Validate();
         if (command.IsValid is false)
             return new CommandResult
             {
                 Success = false,
-                Message = "Ops, parece que sua tarefa está errada!",
+                Message = "Ops, parece que seu item errado!",
                 Data = command.Notifications
             };
 
-        var item = _repository.GetAllShopList().Where(x => x.Id == command.Id).FirstOrDefault();
+        var item = _repository.GetAllShopItem(command.IdShopList).Where(x => x.Id == command.Id).FirstOrDefault();
 
         if (item is null)
             return new CommandResult
             {
                 Success = false,
-                Message = "Ops, lista não encontrada!",
+                Message = "Ops, item não encontrado!",
                 Data = command.Notifications
             };
 
