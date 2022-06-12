@@ -19,21 +19,21 @@ public class ShopItem : Entity
 
     public void UpdateTitle(string title)
     {
-        this.Title = title;
+        Title = title;
     }
    
     public void UpdateQuantity(int quantity)
     {
-        this.Quantity = quantity;
+        Quantity = quantity;
         
     }
     public void MarkAsDone()
     {
-        this.Done = true;
+        Done = true;
     }
     public void MarkAsUndone()
     {
-        this.Done = false;
+        Done = false;
     }
 
     private void UpdateShopListId(Guid shopListId)
