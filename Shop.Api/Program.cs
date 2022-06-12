@@ -1,6 +1,6 @@
-using Shop.Api.FakeRepository;
 using Shop.Domain.Handlers;
 using Shop.Domain.Repositories;
+using Shop.FakeRepository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder);
@@ -30,6 +30,6 @@ void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddTransient<IShopRepository, FakeRepository>();
+    builder.Services.AddTransient<IShopRepository, ShopRepository>();
     builder.Services.AddTransient<ShopHandler, ShopHandler>();
 }
