@@ -5,31 +5,32 @@ namespace Shop.FakeRepository.Repositories;
 
 public class ShopRepository : IShopRepository
 {
-    public void Create(ShopList shopList)
-    {
-    }
+    private HashSet<ShopList> _shopListTable = new();
+    private HashSet<ShopItem> _shopItemTable = new();
 
-    public IEnumerable<ShopItem> GetAllShopItem(Guid shopListId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerable<ShopList> GetAllShopList()
-    {
-        throw new NotImplementedException();
-    }
+    public void Create(ShopList shopList) =>
+        _shopListTable.Add(shopList);
 
     public void Update(ShopList shopList)
     {
+        _shopListTable.Remove(shopList);
+        _shopListTable.Add(shopList);
     }
 
-    void IShopRepository.Create(ShopItem item)
-    {
-        
-    }
+    public IEnumerable<ShopList> GetAllShopList() =>
+        _shopListTable;
+
+
+    void IShopRepository.Create(ShopItem item) =>
+        _shopItemTable.Remove(item);
 
     void IShopRepository.Update(ShopItem item)
     {
-        
+        _shopItemTable.Remove(item);
+        _shopItemTable.Add(item);        
     }
+
+    public IEnumerable<ShopItem> GetAllShopItem(Guid shopListId) =>
+        _shopItemTable.Where(item => item.ShopListId == shopListId);
+    
 }
