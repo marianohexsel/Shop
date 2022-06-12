@@ -7,6 +7,7 @@ public class ShopItem : Entity
 {
     public ShopItem(CreateShopItemCommand command)
     {
+        UpdateShopListId(command.ShopListId);
         UpdateTitle(command.Title);
         UpdateQuantity(command.Quantity);
     }
@@ -33,6 +34,11 @@ public class ShopItem : Entity
     public void MarkAsUndone()
     {
         this.Done = false;
+    }
+
+    private void UpdateShopListId(Guid shopListId)
+    {
+        ShopListId = shopListId;
     }
 
 
