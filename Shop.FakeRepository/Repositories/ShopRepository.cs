@@ -9,6 +9,16 @@ public class ShopRepository : IShopRepository
     {
     }
 
+    public IEnumerable<ShopItem> GetAllShopItem(Guid shopListId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<ShopList> GetAllShopList()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Update(ShopList shopList)
     {
     }
