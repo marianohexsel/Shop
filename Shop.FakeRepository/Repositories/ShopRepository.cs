@@ -17,20 +17,31 @@ public class ShopRepository : IShopRepository
         _shopListTable.Add(shopList);
     }
 
+    public void Delete(ShopList shopList) =>
+        _shopListTable.Remove(shopList);
+
+    public ShopList? GetShopListById(Guid id) =>
+        _shopListTable.Where(x => x.Id == id).FirstOrDefault();
+
     public IEnumerable<ShopList> GetAllShopList() =>
         _shopListTable;
 
-
     void IShopRepository.Create(ShopItem item) =>
-        _shopItemTable.Remove(item);
+        _shopItemTable.Add(item);
 
     void IShopRepository.Update(ShopItem item)
     {
         _shopItemTable.Remove(item);
-        _shopItemTable.Add(item);        
+        _shopItemTable.Add(item);
     }
+    public void Delete(ShopItem item) =>
+        _shopItemTable.Remove(item);
+
+    public ShopItem? GetShopItemById(Guid id) =>
+        _shopItemTable.Where(x => x.Id == id).FirstOrDefault();
 
     public IEnumerable<ShopItem> GetAllShopItem(Guid shopListId) =>
         _shopItemTable.Where(item => item.ShopListId == shopListId);
-    
+
+
 }

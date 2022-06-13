@@ -16,30 +16,14 @@ public class ShopItem : Entity
     public string Title { get; private set; } = string.Empty;
     public int Quantity { get; private set; }
     public bool Done { get; private set; } = false;
-
-    public void UpdateTitle(string title)
-    {
+    public void UpdateTitle(string title) =>
         Title = title;
-    }
-   
-    public void UpdateQuantity(int quantity)
-    {
+    public void UpdateQuantity(int quantity) =>
         Quantity = quantity;
-        
-    }
-    public void MarkAsDone()
-    {
+    public void MarkAsDone() =>
         Done = true;
-    }
-    public void MarkAsUndone()
-    {
+    public void MarkAsUndone() =>
         Done = false;
-    }
-
-    private void UpdateShopListId(Guid shopListId)
-    {
+    private void UpdateShopListId(Guid shopListId) =>
         ShopListId = shopListId;
-    }
-
-
 }
