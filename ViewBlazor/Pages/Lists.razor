@@ -1,0 +1,18 @@
+@page "/lists"
+
+<PageTitle>Lists</PageTitle>
+
+<h1>Lists</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
