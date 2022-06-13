@@ -7,9 +7,9 @@ namespace Shop.Domain.Handlers;
 
 public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListCommand>
 {
-    public CommandResult Handle(ReadAllShopListCommand command)
+    public CommandResult Handle(ReadAllShopItemCommand command)
     {
-        var items = _repository.GetAllShopList();
+        var items = _repository.GetAllShopItem(command.ShopListId);
 
         return new CommandResult
         {
