@@ -1,3 +1,4 @@
+using Shop.Domain.Commands;
 using Shop.Domain.Entities;
 using Shop.Domain.Repositories;
 
@@ -7,6 +8,16 @@ public class ShopRepository : IShopRepository
 {
     static private HashSet<ShopList> _shopListTable = new();
     static private HashSet<ShopItem> _shopItemTable = new();
+
+    public ShopRepository()
+    {
+        if( _shopListTable.Any() ) return;
+        var command = new CreateShopListCommand();
+        command.Title = "Lista 01";
+        Create( new ShopList(command) );
+        command.Title = "Lista 02";
+        Create( new ShopList(command) );
+    }
 
     public void Create(ShopList shopList) =>
         _shopListTable.Add(shopList);

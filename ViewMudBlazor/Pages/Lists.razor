@@ -1,11 +1,33 @@
 @page "/lists"
+@inject HttpClient Http
+
+@using Shop.View.Commands
+@using Shop.View.Model
 
 <PageTitle>Lists</PageTitle>
 
 <MudPaper Width="300px">
     <MudList Clickable="true">
-        @*Foreach para preencher a lista*@
-        <MudListItem Text="Trash" />
-        <MudListItem Text="Spam" />
+        @foreach (var item in @lists)
+        {
+            <MudListItem Text=@item.Title />
+        }
     </MudList>
 </MudPaper>
+
+@code {
+
+    private List<ShopList> lists = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<GetShopListResult>("https://localhost:7038/v1/shop/list");
+        if( result is null || result.Success is false ) 
+            return;
+        lists =  result.Data;
+        StateHasChanged();
+    }
+
+
+
+}
