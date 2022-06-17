@@ -20,7 +20,7 @@ public class ShopListController : ControllerBase
         return handler.Handle(command);
     }
 
-     [HttpPost]
+    [HttpPost]
     [Route("")]
     public CommandResult CreateShopList(
         [FromBody] CreateShopListCommand command,
@@ -29,4 +29,38 @@ public class ShopListController : ControllerBase
     {
         return handler.Handle(command);
     }
+
+    [HttpPut]
+    [Route("")]
+    public CommandResult UpdateShopList(
+        [FromBody] UpdateShopListCommand command,
+        [FromServices] ShopHandler handler
+    ) 
+    {
+        return handler.Handle(command);
+    }
+
+    [HttpDelete]
+    [Route("")]
+    public CommandResult DeleteShopList(
+        [FromBody] DeleteShopListCommand command,
+        [FromServices] ShopHandler handler
+    ) 
+    {
+        return handler.Handle(command);
+    }
+
+    [HttpDelete]
+    [Route("{id:Guid}")]
+    public CommandResult DeleteShopListById(
+        [FromRoute] Guid id,
+        [FromServices] ShopHandler handler
+    ) 
+    {
+        var command = new DeleteShopListCommand();
+        command.Id = id;
+        return handler.Handle(command);
+    }
+
+
 }

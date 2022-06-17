@@ -9,7 +9,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListComma
 {
     public CommandResult Handle(DeleteShopListCommand command)
     {
-        var item = _repository.GetAllShopList().Where(x => x.Id == command.Id).FirstOrDefault();
+        var item = _repository.GetShopListById(command.Id);
 
         if (item is null)
             return new CommandResult
