@@ -44,12 +44,12 @@ else
             var command = new CreateShopListCommand();
             command.Title = TextValue;
             var result = await Http.PostAsJsonAsync<CreateShopListCommand>("https://localhost:7038/v1/shop/list", command);
-            if( result.StatusCode != HttpStatusCode.OK ) 
+            if( result.StatusCode != HttpStatusCode.Created ) 
                 return;
             var value =  await result.Content.ReadFromJsonAsync<CreateShopListResult>();
             if( value is null ) return;
             if( value.Success )
-            {   lists = null;
+            {   lists = null!;
                 TextValue = string.Empty;
                 await ReadAllShopList();
             }

@@ -21,12 +21,13 @@ public class ShopListController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public CommandResult CreateShopList(
+    
+    public ObjectResult CreateShopList(
         [FromBody] CreateShopListCommand command,
         [FromServices] ShopHandler handler
     ) 
     {
-        return handler.Handle(command);
+        return Created("v1/shop/list/" ,handler.Handle(command) );
     }
 
     [HttpPut]
