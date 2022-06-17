@@ -1,25 +1,62 @@
 @page "/lists"
 @inject HttpClient Http
 
+@using Shop.Domain.Commands
 @using Shop.View.Commands
 @using Shop.View.Model
+@using System.Net
 
 <PageTitle>Lists</PageTitle>
-
-<MudPaper Width="300px">
-    <MudList Clickable="true">
-        @foreach (var item in @lists)
-        {
-            <MudListItem Text=@item.Title />
-        }
-    </MudList>
-</MudPaper>
-
+@if (lists == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudPaper Width="300px">
+        <MudTextField @bind-Value="TextValue" Label="Standard" Variant="Variant.Text"></MudTextField>
+        <MudButton Variant="Variant.Filled" OnClick="btn_onclik" >Default</MudButton>
+    </MudPaper>
+    <MudPaper Width="300px">
+        <MudList Clickable="true">
+            @foreach (var item in @lists)
+            {
+                <MudListItem Text=@item.Title />
+            }
+        </MudList>
+    </MudPaper>
+}
 @code {
 
-    private List<ShopList> lists = new();
+    public string TextValue { get; set; } = string.Empty;
+    private List<ShopList> lists = null!;
 
     protected override async Task OnInitializedAsync()
+    {
+        await ReadAllShopList();
+    }
+
+    async Task btn_onclik()
+    {
+        Console.WriteLine("btn_onclik");
+        if( TextValue.Any() )
+        {
+            var command = new CreateShopListCommand();
+            command.Title = TextValue;
+            var result = await Http.PostAsJsonAsync<CreateShopListCommand>("https://localhost:7038/v1/shop/list", command);
+            if( result.StatusCode != HttpStatusCode.OK ) 
+                return;
+            var value =  await result.Content.ReadFromJsonAsync<CreateShopListResult>();
+            if( value is null ) return;
+            if( value.Success )
+            {   lists = null;
+                TextValue = string.Empty;
+                await ReadAllShopList();
+            }
+        }
+    }
+
+    async Task ReadAllShopList()
     {
         var result = await Http.GetFromJsonAsync<GetShopListResult>("https://localhost:7038/v1/shop/list");
         if( result is null || result.Success is false ) 
@@ -31,3 +68,4 @@
 
 
 }
+

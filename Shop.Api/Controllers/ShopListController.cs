@@ -16,7 +16,6 @@ public class ShopListController : ControllerBase
     )
     {
         var command = new ReadAllShopListCommand();
-
         return handler.Handle(command);
     }
 
