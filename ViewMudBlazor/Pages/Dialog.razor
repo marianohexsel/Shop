@@ -1,0 +1,18 @@
+@using Shop.View.Model
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField @bind-Value="@list.Title" Label="Standard" Variant="Variant.Text"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public ShopList list { get;  set;} = new();
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(list));
+    void Cancel() => MudDialog.Cancel();
+}

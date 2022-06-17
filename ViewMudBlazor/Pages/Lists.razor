@@ -1,5 +1,6 @@
 @page "/lists"
 @inject HttpClient Http
+@inject IDialogService Dialog
 
 @using Shop.Domain.Commands
 @using Shop.View.Commands
@@ -13,15 +14,19 @@
 }
 else
 {
-    <MudPaper Width="300px">
+    <MudPaper>
         <MudTextField @bind-Value="TextValue" Label="Standard" Variant="Variant.Text"></MudTextField>
-        <MudButton Variant="Variant.Filled" OnClick="btn_onclik" >Default</MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="btn_onclick">Create</MudButton>
     </MudPaper>
-    <MudPaper Width="300px">
-        <MudList Clickable="true">
+    <MudPaper>
+        <MudList Clickable="false">
             @foreach (var item in @lists)
             {
-                <MudListItem Text=@item.Title />
+                <MudListItem>
+                    <MudButton Style="width:500px">@item.Title</MudButton>
+                    <MudButton OnClick="@(()=>{OnUpdateItemClicked(@item);})">Update</MudButton>
+                    <MudButton OnClick="@(()=>{OnDeleteItemClicked(@item);})">Delete</MudButton>
+                </MudListItem>
             }
         </MudList>
     </MudPaper>
@@ -29,27 +34,60 @@ else
 @code {
 
     public string TextValue { get; set; } = string.Empty;
+    public MudListItem ShopListSelected { get; set; }
     private List<ShopList> lists = null!;
 
     protected override async Task OnInitializedAsync()
     {
         await ReadAllShopList();
+
     }
 
-    async Task btn_onclik()
+    async Task OnUpdateItemClicked(ShopList list)
     {
-        Console.WriteLine("btn_onclik");
-        if( TextValue.Any() )
+        var updateList = new ShopList()
+        {
+            Id = list.Id,
+            Title = list.Title
+        };
+        var parameters = new DialogParameters { ["list"] = updateList };
+        Console.WriteLine($"Clicked on {updateList.Id}");
+        var dialog = Dialog.Show<Dialog>("Renomeie a lista", parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            Console.WriteLine("ok");
+            var item = result.Data as ShopList;
+            await UpdateShopList(item);
+        }
+    }
+
+    async Task OnDeleteItemClicked(ShopList list)
+    {
+        var result = await Http.DeleteAsync($"https://localhost:5001/v1/shop/list/{list.Id.ToString()}");
+        if (result.StatusCode != HttpStatusCode.OK)
+            return;
+        lists = null!;
+        TextValue = string.Empty;
+        await ReadAllShopList();
+    }
+
+    async Task btn_onclick()
+    {
+        Console.WriteLine("btn_onclick");
+        if (TextValue.Any())
         {
             var command = new CreateShopListCommand();
             command.Title = TextValue;
-            var result = await Http.PostAsJsonAsync<CreateShopListCommand>("https://localhost:7038/v1/shop/list", command);
-            if( result.StatusCode != HttpStatusCode.Created ) 
+            var result = await Http.PostAsJsonAsync<CreateShopListCommand>("https://localhost:5001/v1/shop/list", command);
+            Console.WriteLine(result.StatusCode);
+            if (result.StatusCode != HttpStatusCode.Created)
                 return;
-            var value =  await result.Content.ReadFromJsonAsync<CreateShopListResult>();
-            if( value is null ) return;
-            if( value.Success )
-            {   lists = null!;
+            var value = await result.Content.ReadFromJsonAsync<CreateShopListResult>();
+            if (value is null) return;
+            if (value.Success)
+            {
+                lists = null!;
                 TextValue = string.Empty;
                 await ReadAllShopList();
             }
@@ -58,14 +96,29 @@ else
 
     async Task ReadAllShopList()
     {
-        var result = await Http.GetFromJsonAsync<GetShopListResult>("https://localhost:7038/v1/shop/list");
-        if( result is null || result.Success is false ) 
+        var result = await Http.GetFromJsonAsync<GetShopListResult>("https://localhost:5001/v1/shop/list");
+        if (result is null || result.Success is false)
             return;
-        lists =  result.Data;
+        lists = result.Data;
         StateHasChanged();
     }
 
-
-
+    async Task UpdateShopList(ShopList shoplist)
+    {
+        var command = new UpdateShopListCommand();
+        command.Id = shoplist.Id;
+        command.Title = shoplist.Title;
+        var result = await Http.PutAsJsonAsync<UpdateShopListCommand>("https://localhost:5001/v1/shop/list", command);
+        Console.WriteLine(result.StatusCode);
+        if (result.StatusCode != HttpStatusCode.OK)
+            return;
+        var value = await result.Content.ReadFromJsonAsync<CreateShopListResult>();
+        if (value is null) return;
+        if (value.Success)
+        {
+            lists = null!;
+            TextValue = string.Empty;
+            await ReadAllShopList();
+        }
+    }
 }
-
