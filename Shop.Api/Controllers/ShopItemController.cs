@@ -6,9 +6,11 @@ namespace Shop.Api.Controllers;
 
 [ApiController]
 [Route("v1/shop")]
-public class ShopController : ControllerBase
+public class ShopItemController : ControllerBase
 {
+
     [HttpPost]
+    [Route("item")]
     public CommandResult CreateShopItem(
         [FromBody] CreateShopItemCommand command,
         [FromServices] ShopHandler handler

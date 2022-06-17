@@ -5,8 +5,8 @@ namespace Shop.FakeRepository.Repositories;
 
 public class ShopRepository : IShopRepository
 {
-    private HashSet<ShopList> _shopListTable = new();
-    private HashSet<ShopItem> _shopItemTable = new();
+    static private HashSet<ShopList> _shopListTable = new();
+    static private HashSet<ShopItem> _shopItemTable = new();
 
     public void Create(ShopList shopList) =>
         _shopListTable.Add(shopList);
