@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.FakeRepository", "Shop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewBlazor", "ViewBlazor\ViewBlazor.csproj", "{5C173D43-8B74-411E-991C-705CD93D0F2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewMudBlazor", "ViewMudBlazor\ViewMudBlazor.csproj", "{71C84A62-4A01-444E-A8CA-448E1D324037}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{5C173D43-8B74-411E-991C-705CD93D0F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C173D43-8B74-411E-991C-705CD93D0F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C173D43-8B74-411E-991C-705CD93D0F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71C84A62-4A01-444E-A8CA-448E1D324037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71C84A62-4A01-444E-A8CA-448E1D324037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71C84A62-4A01-444E-A8CA-448E1D324037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71C84A62-4A01-444E-A8CA-448E1D324037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
