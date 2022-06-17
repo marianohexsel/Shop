@@ -10,8 +10,8 @@
     </DialogActions>
 </MudDialog>
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public ShopList list { get;  set;} = new();
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    [Parameter] public ShopList list { get; set; } = new();
 
     void Submit() => MudDialog.Close(DialogResult.Ok(list));
     void Cancel() => MudDialog.Cancel();

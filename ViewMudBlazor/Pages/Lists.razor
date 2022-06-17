@@ -24,8 +24,8 @@ else
             {
                 <MudListItem>
                     <MudButton Style="width:500px">@item.Title</MudButton>
-                    <MudButton OnClick="@(()=>{OnUpdateItemClicked(@item);})">Update</MudButton>
-                    <MudButton OnClick="@(()=>{OnDeleteItemClicked(@item);})">Delete</MudButton>
+                    <MudButton OnClick="@(async()=>{await OnUpdateItemClicked(@item);})">Update</MudButton>
+                    <MudButton OnClick="@(async()=>{await OnDeleteItemClicked(@item);})">Delete</MudButton>
                 </MudListItem>
             }
         </MudList>
@@ -34,12 +34,12 @@ else
 @code {
 
     public string TextValue { get; set; } = string.Empty;
-    public MudListItem ShopListSelected { get; set; }
     private List<ShopList> lists = null!;
 
     protected override async Task OnInitializedAsync()
     {
         await ReadAllShopList();
+
 
     }
 
@@ -58,7 +58,8 @@ else
         {
             Console.WriteLine("ok");
             var item = result.Data as ShopList;
-            await UpdateShopList(item);
+            if (item != null)
+                await UpdateShopList(item);
         }
     }
 
