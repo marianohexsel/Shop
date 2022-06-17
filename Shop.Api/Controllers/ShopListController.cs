@@ -43,7 +43,7 @@ public class ShopListController : ControllerBase
     [HttpDelete]
     [Route("")]
     public CommandResult DeleteShopList(
-        [FromBody] DeleteShopListCommand command,
+        [FromBody] DeleteShopListsCommand command,
         [FromServices] ShopHandler handler
     ) 
     {

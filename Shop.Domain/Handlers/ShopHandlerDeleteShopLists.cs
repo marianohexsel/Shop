@@ -1,7 +1,6 @@
 
 using System.Text;
 using Shop.Domain.Commands;
-using Shop.Domain.Entities;
 using Shop.Domain.Handlers.Contracts;
 
 namespace Shop.Domain.Handlers;
@@ -14,7 +13,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListComma
         StringBuilder sbNotFoundIds = new StringBuilder();
         foreach (var id in command.Ids)
         {
-            var item = _repository.GetAllShopList().Where(x => x.Id == id).FirstOrDefault();
+            var item = _repository.GetShopListById(id);
 
             if (item is null)
                 sbNotFoundIds.AppendLine(id.ToString());

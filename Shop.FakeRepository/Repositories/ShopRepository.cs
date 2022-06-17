@@ -26,6 +26,18 @@ public class ShopRepository : IShopRepository
     public IEnumerable<ShopList> GetAllShopList() =>
         _shopListTable;
 
+    public IEnumerable<ShopList> GetAllShopList(IEnumerable<Guid> ids)
+    {
+        List<ShopList> list = new();
+        foreach (var id in ids)
+        {
+            var item = GetShopListById(id);
+            if(item is not null)
+                list.Add(item);
+        }
+        return list;
+    }
+        
     void IShopRepository.Create(ShopItem item) =>
         _shopItemTable.Add(item);
 
