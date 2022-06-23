@@ -20,30 +20,41 @@ else
     </MudPaper>
     <MudPaper>
         <MudList Clickable="false">
-            @foreach (var item in @lists)
+            @if (ShowLists)
             {
-                <MudListItem>
-                    <MudButton Style="width:500px">@item.Title</MudButton>
-                    <MudButton OnClick="@(async()=>{await OnUpdateItemClicked(@item);})">Update</MudButton>
-                    <MudButton OnClick="@(async()=>{await OnDeleteItemClicked(@item);})">Delete</MudButton>
-                </MudListItem>
+                @foreach (var item in @lists)
+                {
+                    <MudListItem>
+                        <MudButton Style="width:500px">@item.Title</MudButton>
+                        <MudButton OnClick="@(async()=>{await OnUpdateListClicked(@item);})">Update</MudButton>
+                        <MudButton OnClick="@(async()=>{await OnDeleteListClicked(@item);})">Delete</MudButton>
+                    </MudListItem>
+                }
+            }
+            else
+            {
+                @* @foreach (var item in @items)
+                    {
+                    <MudListItem>
+                    <MudButton Style="width:500px">@item.Title Qtd= @item.Quantity</MudButton>
+                    </MudListItem>
+                    } *@
             }
         </MudList>
     </MudPaper>
 }
 @code {
-
+    public bool ShowLists { get; set; } = true;
     public string TextValue { get; set; } = string.Empty;
+    private List<ShopItem> items = null!;
     private List<ShopList> lists = null!;
 
     protected override async Task OnInitializedAsync()
     {
         await ReadAllShopList();
-
-
     }
 
-    async Task OnUpdateItemClicked(ShopList list)
+    async Task OnUpdateListClicked(ShopList list)
     {
         var updateList = new ShopList()
         {
@@ -51,19 +62,17 @@ else
             Title = list.Title
         };
         var parameters = new DialogParameters { ["list"] = updateList };
-        Console.WriteLine($"Clicked on {updateList.Id}");
         var dialog = Dialog.Show<Dialog>("Renomeie a lista", parameters);
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            Console.WriteLine("ok");
             var item = result.Data as ShopList;
             if (item != null)
                 await UpdateShopList(item);
         }
     }
 
-    async Task OnDeleteItemClicked(ShopList list)
+    async Task OnDeleteListClicked(ShopList list)
     {
         var result = await Http.DeleteAsync($"https://localhost:5001/v1/shop/list/{list.Id.ToString()}");
         if (result.StatusCode != HttpStatusCode.OK)

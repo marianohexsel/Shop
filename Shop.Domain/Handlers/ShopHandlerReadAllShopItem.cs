@@ -11,10 +11,20 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListComma
     {
         var items = _repository.GetAllShopItem(command.ShopListId);
 
+        if (items is null)
+        {
+            return new CommandResult
+            {
+                Success = false,
+                Message = "Lista de compras não encontrada",
+                Data = null
+            };
+        }
+
         return new CommandResult
         {
             Success = true,
-            Message = "Listas de compras encontradas",
+            Message = "Lista de compra encontrada",
             Data = items
         };
     }

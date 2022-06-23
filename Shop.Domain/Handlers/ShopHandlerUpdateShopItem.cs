@@ -18,7 +18,7 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListComma
                 Data = command.Notifications
             };
 
-        var item = _repository.GetAllShopItem(command.IdShopList).Where(x => x.Id == command.Id).FirstOrDefault();
+        var item = _repository.GetAllShopItem(command.ShopListId).Where(x => x.Id == command.Id).FirstOrDefault();
 
         if (item is null)
             return new CommandResult
@@ -29,6 +29,12 @@ public partial class ShopHandler : ShopHandlerBase, IHandler<CreateShopListComma
             };
 
         item.UpdateTitle(command.Title);
+        item.UpdateQuantity(command.Quantity);
+        if (command.Done)
+            item.MarkAsDone();
+        else
+            item.MarkAsUndone();
+
         _repository.Update(item);
 
         return new CommandResult

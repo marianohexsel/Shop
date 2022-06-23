@@ -4,7 +4,7 @@ namespace Shop.Domain.Commands;
 
 public class CreateShopItemCommand : Command
 {
-    public Guid ShopListId  { get; set; }
+    public Guid ShopListId { get; set; }
     public string Title { get; set; } = null!;
     public int Quantity { get; set; }
 
@@ -16,6 +16,6 @@ public class CreateShopItemCommand : Command
             .IsNotNullOrEmpty(Title, "Title", "Título não pode ser vazio")
             .IsGreaterThan(Title, 1, "Title", "Título deve conter no mínimo 2 letras")
         );
-        
+
     }
 }
